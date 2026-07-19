@@ -11,7 +11,7 @@ def bloch_to_2d(theta, phi, radius):
 
 
 class BlochSphere2D(VGroup):
-    def __init__(self, radius, **kwargs):
+    def __init__(self, radius, show_labels=False, **kwargs):
         super().__init__(**kwargs)
         self.radius = radius
 
@@ -20,9 +20,10 @@ class BlochSphere2D(VGroup):
         self.meridians = self._make_meridians()
         self.axes = self._make_axes()
         self.labels = self._make_labels()
-
-        self.add(self.outline, self.equator, *self.meridians, self.axes, self.labels)
-
+        if show_labels:
+            self.add(self.outline, self.equator, *self.meridians, self.axes, self.labels)
+        else:
+            self.add(self.outline, self.equator, *self.meridians, self.axes)
 
     def _make_outline(self):
         return Circle(radius=self.radius, color=SPHERE_COLOR, stroke_width=2)
@@ -72,3 +73,17 @@ class BlochSphere2D(VGroup):
     def point_at(self, thera, phi):
         local = bloch_to_2d(thera, phi, radius=self.radius)
         return self.outline.get_center() + local
+
+    def vector(self, qubit):
+        return always_redraw(
+            lambda: Arrow(
+                self.get_center(),
+                self.point_at(
+                    qubit.theta.get_value(),
+                    qubit.phi.get_value(),
+                ),
+                color=VECTOR_COLOR,
+                stroke_width=2,
+                max_tip_length_to_length_ratio=0.1,
+            )
+        )
