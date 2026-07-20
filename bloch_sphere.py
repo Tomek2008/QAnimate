@@ -2,63 +2,77 @@ import numpy as np
 from manim import *
 from constants import *
 
-def bloch_to_2d(theta, phi, radius):
+
+def bloch_to_3d(theta, phi, radius):
     x = radius * np.sin(theta) * np.cos(phi)
-    y_depth = radius * np.sin(theta) * np.sin(phi) * DEPTH_FLATTEN
+    y = radius * np.sin(theta) * np.sin(phi)
     z = radius * np.cos(theta)
+    return np.array([x, y, z])
 
-    return np.array([x, z + y_depth, 0])
 
-
-class BlochSphere2D(VGroup):
-    def __init__(self, radius, show_labels=False, **kwargs):
+class BlochSphere3D(VGroup):
+    def __init__(self, radius, show_labels=True, **kwargs):
         super().__init__(**kwargs)
         self.radius = radius
 
-        self.outline = self._make_axes()
+        self.surface = self._make_surface()
         self.equator = self._make_equator()
         self.meridians = self._make_meridians()
         self.axes = self._make_axes()
         self.labels = self._make_labels()
-        if show_labels:
-            self.add(self.outline, self.equator, *self.meridians, self.axes, self.labels)
-        else:
-            self.add(self.outline, self.equator, *self.meridians, self.axes)
 
-    def _make_outline(self):
-        return Circle(radius=self.radius, color=SPHERE_COLOR, stroke_width=2)
+        self.add(self.surface, self.equator, *self.meridians, self.axes)
+        if show_labels:
+            self.add(self.labels)
+
+    def _make_surface(self):
+        sphere = Sphere(
+            radius=self.radius,
+            resolution=(24, 24),
+            fill_opacity=0.08,
+            stroke_opacity=0.0,
+            checkerboard_colors=[SPHERE_COLOR, SPHERE_COLOR],
+        )
+        sphere.set_color(SPHERE_COLOR)
+
+        return sphere
 
     def _make_equator(self):
-        return Ellipse(width=self.radius * 2,
-                       height=self.radius * 2  * DEPTH_FLATTEN,
-                       color=EQUATOR_COLOR,
-                       stroke_width=1.5)
+        return Circle(radius=self.radius, color=EQUATOR_COLOR, stroke_width=1.5)
 
     def _make_meridians(self):
-        return [Ellipse(width=self.radius * 2 * DEPTH_FLATTEN,
-                       height=self.radius * 2,
-                       color=MERIDIAN_COLOR,
-                       stroke_width=1.5)]
-
+        meridian_xz = Circle(radius=self.radius, color=MERIDIAN_COLOR, stroke_width=1.5)
+        meridian_xz.rotate(PI / 2, axis=RIGHT)
+        meridian_yz = Circle(radius=self.radius, color=MERIDIAN_COLOR, stroke_width=1.5)
+        meridian_yz.rotate(PI / 2, axis=UP)
+        return [meridian_xz, meridian_yz]
 
     def _make_axes(self):
         axes = VGroup()
-        axes.add(Line(bloch_to_2d(np.pi, 0, self.radius),
-                 bloch_to_2d(0, 0, self.radius),
-                 color=AXIS_COLOR, stroke_width=1.5))
-
-        axes.add(Line(bloch_to_2d(np.pi / 2, np.pi, self.radius),
-                      bloch_to_2d(np.pi / 2, 0, self.radius),
-                      color=AXIS_COLOR, stroke_width=1.5))
+        axes.add(Line3D(
+            bloch_to_3d(np.pi, 0, self.radius),
+            bloch_to_3d(0, 0, self.radius),
+            color=AXIS_COLOR, thickness=0.01,
+        ))
+        axes.add(Line3D(
+            bloch_to_3d(np.pi / 2, np.pi, self.radius),
+            bloch_to_3d(np.pi / 2, 0, self.radius),
+            color=AXIS_COLOR, thickness=0.01,
+        ))
+        axes.add(Line3D(
+            bloch_to_3d(np.pi / 2, -np.pi / 2, self.radius),
+            bloch_to_3d(np.pi / 2, np.pi / 2, self.radius),
+            color=AXIS_COLOR, thickness=0.01,
+        ))
         return axes
 
     def _make_labels(self):
         labels = VGroup()
         for key, (text, direction) in BLOCH_LABELS.items():
             theta, phi = self._direction_to_angle(direction)
-            pos = bloch_to_2d(theta, phi, radius=self.radius)
-            offset = np.array(direction) * 0.4
-            label = Text(text, font=FONT, color=LABEL_COLOR, font_size=20)
+            pos = bloch_to_3d(theta, phi, radius=self.radius)
+            offset = np.array(direction) * 0.7
+            label = Text(text, font=FONT, color=LABEL_COLOR, font_size=28)
             label.move_to(pos + offset)
             labels.add(label)
         return labels
@@ -70,20 +84,20 @@ class BlochSphere2D(VGroup):
         phi = np.arctan2(y, x)
         return theta, phi
 
-    def point_at(self, thera, phi):
-        local = bloch_to_2d(thera, phi, radius=self.radius)
-        return self.outline.get_center() + local
+    def point_at(self, theta, phi):
+        local = bloch_to_3d(theta, phi, radius=self.radius)
+        return self.get_center() + local
 
     def vector(self, qubit):
         return always_redraw(
-            lambda: Arrow(
-                self.get_center(),
-                self.point_at(
+            lambda: Arrow3D(
+                start=self.get_center(),
+                end=self.point_at(
                     qubit.theta.get_value(),
                     qubit.phi.get_value(),
                 ),
                 color=VECTOR_COLOR,
-                stroke_width=2,
-                max_tip_length_to_length_ratio=0.1,
+                thickness=0.02,
+                base_radius=0.05,
             )
         )
