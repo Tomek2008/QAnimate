@@ -16,15 +16,15 @@ Goal: `animate(qc)` - automatically generated Manim animations showing how a
 qubit's state moves on the Bloch sphere as each gate in the circuit is applied.
 ## Status: early MVP
 ### Currently working
-    Full 3D Bloch Sphere (BlochSphere3D) using Manim's (Sphere, Circle meridians/equator, Arrow3D state vector).
-    Qubit class with animatable state (theta, phi, r via ValueTracker)
-    Manual state transitions (q.set_angles(theta, phi))
-    Basic entanglement indicator (manual color trigger, not automatic detection)
+- Full 3D Bloch Sphere (BlochSphere3D) using Manim's (Sphere, Circle meridians/equator, Arrow3D state vector).
+- Qubit class with animatable state (theta, phi, r via ValueTracker)
+- Manual state transitions (q.set_angles(theta, phi))
+- Basic entanglement indicator (manual color trigger, not automatic detection)
 ### Not yet implemented:
-    Qiskit bridge
-    Multi-qubit entanglement
-    Gate labels / circuit diagram
-    Multi-qubit circuit layout (multiple spheres side by side, synced timing).
+- Qiskit bridge
+- Multi-qubit entanglement
+- Gate labels / circuit diagram
+- Multi-qubit circuit layout (multiple spheres side by side, synced timing).
 
 ## Setup
 ```bash
