@@ -5,7 +5,7 @@ from bloch_sphere import BlochSphere3D
 from qubit import Qubit
 from manim import *
 
-class BlochSphereCheck(ThreeDScene):
+class BlochSphereOneQubit(ThreeDScene):
     def construct(self):
         self.set_camera_orientation(phi=65 * DEGREES, theta=-45 * DEGREES)
 
