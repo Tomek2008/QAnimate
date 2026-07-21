@@ -45,3 +45,8 @@ e.g
 ```bash
 manim -pql scenes/bloch_sphere_conversion.py BlochSphereOneQubit
 ```
+
+Parts of this project were developed with the assistance of AI tools:
+- Explaining quantum computing concepts (qubit states, Bloch sphere
+  representation, gate rotations) to guide implementation decisions.
+- README translation
