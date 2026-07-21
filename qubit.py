@@ -1,9 +1,10 @@
 from constants import *
 
 class Qubit:
-    def __init__(self, theta, phi):
+    def __init__(self, theta, phi, r=1):
         self.theta = ValueTracker(theta)
         self.phi = ValueTracker(phi)
+        self.r = ValueTracker(r)
 
     @classmethod
     def zero(cls):

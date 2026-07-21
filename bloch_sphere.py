@@ -14,6 +14,7 @@ class BlochSphere3D(VGroup):
     def __init__(self, radius, show_labels=True, **kwargs):
         super().__init__(**kwargs)
         self.radius = radius
+        self.entanglement_ring = None
 
         self.surface = self._make_surface()
         self.equator = self._make_equator()
@@ -101,3 +102,23 @@ class BlochSphere3D(VGroup):
                 base_radius=0.05,
             )
         )
+
+    def set_entanglement_color(self, color):
+        ring_a = Circle(
+            radius=self.radius * 1.08,
+            stroke_width=6,
+            stroke_opacity=0.8,
+            fill_opacity=0,
+        )
+        ring_a.set_stroke(color, width=6)
+        ring_b = ring_a.copy().rotate(PI / 2, axis=RIGHT)
+        ring_c = ring_a.copy().rotate(PI / 2, axis=UP)
+
+        self.entanglement_ring = VGroup(ring_a, ring_b, ring_c)
+        self.add(self.entanglement_ring)
+        return self.entanglement_ring
+
+    def clear_entanglement_color(self):
+        if self.entanglement_ring is not None:
+            self.remove(self.entanglement_ring)
+            self.entanglement_ring = None
