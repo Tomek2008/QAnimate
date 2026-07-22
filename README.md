@@ -33,6 +33,8 @@ source .venv/bin/activate
 pip install manim numpy qiskit pytest
 ```
 
+## Try it out
+Google Colab: https://colab.research.google.com/github/Tomek2008/QAnimate/blob/main/demo.ipynb
 
 ## Render a scene
 
@@ -41,7 +43,7 @@ manim -pql scenes/scene_name.py ClassName
 ```
 (-pql = preview, low quality. Use -pqm/-pqh for medium/high.)
 
-e.g
+e.g.
 ```bash
 manim -pql scenes/bloch_sphere_conversion.py BlochSphereOneQubit
 ```
