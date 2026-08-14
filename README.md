@@ -28,13 +28,25 @@ qubit's state moves on the Bloch sphere as each gate in the circuit is applied.
 
 ## Setup
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install manim numpy qiskit pytest
+pip install qanimate
 ```
 
 ## Try it out
 Google Colab: https://colab.research.google.com/github/Tomek2008/QAnimate/blob/main/demo.ipynb
+
+
+## Development setup
+
+If you want to contribute or run the test suite locally:
+
+```bash
+git clone https://github.com/Tomek2008/QAnimate.git
+cd QAnimate
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+pip install pytest
+```
 
 ## Render a scene
 
@@ -48,7 +60,8 @@ e.g.
 manim -pql scenes/bloch_sphere_conversion.py BlochSphereOneQubit
 ```
 
+
 Parts of this project were developed with the assistance of AI tools:
 - Explaining quantum computing concepts (qubit states, Bloch sphere
   representation, gate rotations) to guide implementation decisions.
-- README translation
+- README translation.
