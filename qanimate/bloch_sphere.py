@@ -1,6 +1,4 @@
-import numpy as np
-from manim import *
-from constants import *
+from .constants import *
 
 
 def bloch_to_3d(theta, phi, radius):

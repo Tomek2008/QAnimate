@@ -1,8 +1,8 @@
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from bloch_sphere import BlochSphere3D
-from qubit import Qubit
+from qanimate.bloch_sphere import BlochSphere3D
+from qanimate.qubit import Qubit
 from manim import *
 
 class BlochSphereOneQubit(ThreeDScene):

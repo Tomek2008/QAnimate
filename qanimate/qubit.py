@@ -1,4 +1,4 @@
-from constants import *
+from .constants import *
 
 class Qubit:
     def __init__(self, theta, phi, r=1):
