@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qanimate"
+version = "0.1.0"
+description = "Animate qubit states on the Bloch sphere from Qiskit circuits, using Manim"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {file = "LICENSE"}
+authors = [{name = "Tomek", email = "tomek.zmuda@outlook.com"}]
+dependencies = [
+    "manim>=0.18.0",
+    "qiskit>=1.0.0",
+    "numpy>=1.24.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Tomek2008/QAnimate"
+
+[tool.setuptools]
+packages = ["qanimate"]
